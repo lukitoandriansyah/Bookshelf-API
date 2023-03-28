@@ -82,6 +82,7 @@ const getBooks = (response, h) => {
                 books: bookList,
             },
         });
+        resp.code(200);
         return resp;
     }
 
@@ -91,6 +92,7 @@ const getBooks = (response, h) => {
             books: [],
         },
     });
+    resp.code(200);
     return resp;
 }
 
