@@ -16,7 +16,12 @@ const routes = [
         method: 'GET',
         path: '/books',
         handler: getBooks
-    },
+    },/*
+    {
+        method: 'GET',
+        path: '/books',
+        handler: getBooks
+    },*/
     {
         method: 'GET',
         path: '/books/{bookId}',
