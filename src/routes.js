@@ -1,8 +1,8 @@
-const {getBooks} = require("./handler");
+const {getBooks, addBook} = require("./handler");
 const routes=[{
-    method:'GET',
+    method:'POST',
     path:'/books',
-    handler:getBooks
+    handler:addBook
 },];
 
 module.exports=routes;
