@@ -96,4 +96,47 @@ const getBooks = (response, h) => {
     return resp;
 }
 
-module.exports = {getBooks, addBook};
+const getBookById = (request, h)=>{
+    const {bookId} = request.params;
+    const book = books.filter((book)=>book.id===bookId)[0];
+    if (book){
+        if(parseInt(book.pageCount.toString())===parseInt(book.readPage.toString())){
+            if(book){
+                const resp = h.response({
+                    status: 'success',
+                    data:{
+                        book
+                    },
+                });
+
+                resp.code(200);
+                return resp;
+            }
+
+            const resp = h.response({
+                status: 'fail',
+                message: 'Buku tidak ditemukan',
+            });
+            resp.code(404);
+            return resp;
+        }
+        const resp = h.response({
+            status: 'success',
+            data:{
+                book
+            },
+        });
+
+        resp.code(200);
+        return resp;
+    }
+    const resp = h.response({
+        status: 'fail',
+        message: 'Buku tidak ditemukan',
+    });
+    resp.code(404);
+    return resp;
+}
+
+
+module.exports = {getBooks, addBook, getBookById};
