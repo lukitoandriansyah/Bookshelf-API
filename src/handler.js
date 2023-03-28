@@ -59,16 +59,39 @@ const addBook = (request, h) => {
             bookId: id,
         }
     })
-
     resp.code(201);
     return resp;
-
 }
-const getBooks = () => ({
-    status: 'success',
-    data: {
-        books
-    },
-});
+
+const getBooks = (response, h) => {
+    const booksIsAny = books.length
+    if (booksIsAny > 0) {
+        const bookList = [];
+        for (let i = 0; i < booksIsAny; i++) {
+            const keyBook = {
+                id: books[i].id,
+                name: books[i].name,
+                publisher: books[i].publisher
+            }
+            bookList.push(keyBook);
+        }
+
+        const resp = h.response({
+            status: 'success',
+            data: {
+                books: bookList,
+            },
+        });
+        return resp;
+    }
+
+    const resp = h.response({
+        status: 'success',
+        data: {
+            books: [],
+        },
+    });
+    return resp;
+}
 
 module.exports = {getBooks, addBook};
