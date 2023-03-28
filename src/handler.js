@@ -209,6 +209,18 @@ const deleteBook = (request, h)=>{
     const  {bookId}=request.params;
     const index = books.findIndex((book)=>book.id===bookId)
     if(index !==-1){
+
+        if(books[index].finished.toString==='True'){
+            books.splice(index,1)
+
+            const resp = h.response({
+                status:'success',
+                message:'Buku berhasil dihapus',
+            });
+            resp.code(200);
+            return resp;
+        }
+
         books.splice(index,1)
 
         const resp = h.response({
