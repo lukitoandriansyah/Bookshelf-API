@@ -96,15 +96,15 @@ const getBooks = (response, h) => {
     return resp;
 }
 
-const getBookById = (request, h)=>{
+const getBookById = (request, h) => {
     const {bookId} = request.params;
-    const book = books.filter((book)=>book.id===bookId)[0];
-    if (book){
-        if(parseInt(book.pageCount.toString())===parseInt(book.readPage.toString())){
-            if(book){
+    const book = books.filter((book) => book.id === bookId)[0];
+    if (book) {
+        if (parseInt(book.pageCount.toString()) === parseInt(book.readPage.toString())) {
+            if (book) {
                 const resp = h.response({
                     status: 'success',
-                    data:{
+                    data: {
                         book
                     },
                 });
@@ -122,7 +122,7 @@ const getBookById = (request, h)=>{
         }
         const resp = h.response({
             status: 'success',
-            data:{
+            data: {
                 book
             },
         });
@@ -138,8 +138,8 @@ const getBookById = (request, h)=>{
     return resp;
 }
 
-const updateBook = (request, h)=>{
-    const  {bookId}=request.params;
+const updateBook = (request, h) => {
+    const {bookId} = request.params;
     const {
         name,
         year,
@@ -152,29 +152,29 @@ const updateBook = (request, h)=>{
     } = request.payload;
 
     const updatedAt = new Date().toISOString()
-    const index = books.findIndex((book)=>book.id === bookId)
+    const index = books.findIndex((book) => book.id === bookId)
 
-    if(index !== -1){
+    if (index !== -1) {
 
-        if(name===undefined || name.toString().trim().length===0){
+        if (name === undefined || name.toString().trim().length === 0) {
             const resp = h.response({
                 status: 'fail',
-                message:'Gagal memperbarui buku. Mohon isi nama buku',
+                message: 'Gagal memperbarui buku. Mohon isi nama buku',
             })
 
             resp.code(400);
             return resp;
-        }else if(parseInt(readPage.toString())> parseInt(pageCount.toString())){
+        } else if (parseInt(readPage.toString()) > parseInt(pageCount.toString())) {
             const resp = h.response({
-                status:'fail',
-                message:'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
+                status: 'fail',
+                message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
             })
             resp.code(400);
             return resp;
         }
 
 
-        books[index]={
+        books[index] = {
             ...books[index],
             name,
             year,
@@ -189,7 +189,7 @@ const updateBook = (request, h)=>{
 
         const resp = h.response({
             status: 'success',
-            message:'Buku berhasil diperbarui',
+            message: 'Buku berhasil diperbarui',
         })
 
         resp.code(200);
@@ -197,12 +197,43 @@ const updateBook = (request, h)=>{
     }
 
     const resp = h.response({
-        status:'fail',
-        message:'Gagal memperbarui buku. Id tidak ditemukan',
+        status: 'fail',
+        message: 'Gagal memperbarui buku. Id tidak ditemukan',
     })
     resp.code(404);
     return resp
 
 }
 
-module.exports = {getBooks, addBook, getBookById, updateBook};
+const deleteBook = (request, h)=>{
+    const  {bookId}=request.params;
+    const index = books.findIndex((book)=>book.id===bookId)
+    if(index !==-1){
+        books.splice(index,1)
+
+        const resp = h.response({
+            status:'success',
+            message:'Buku berhasil dihapus',
+        });
+        resp.code(200);
+        return resp;
+    }
+
+    const resp = h.response({
+        status: 'fail',
+        message:'Buku gagal dihapus. Id tidak ditemukan'
+    })
+
+    resp.code(404);
+    return resp;
+
+}
+
+
+module.exports = {
+    getBooks,
+    addBook,
+    getBookById,
+    updateBook,
+    deleteBook
+};
